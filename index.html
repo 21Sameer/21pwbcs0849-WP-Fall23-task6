@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<style>
+    #container{
+        display: flex;
+        background-color: beige;
+        border: 15px;
+        margin: auto;
+        border-radius: 5px;
+    }
+#head{
+    text-align: center;
+    background-color: aquamarine;
+    margin: 1px;
+    border-radius: auto;
+    padding: 5%;
+}
+#vl {
+  border-left: 3px solid black;
+  height: 300px;
+}
+#book{
+    text-align: left;
+    background-color: rgba(207, 189, 24, 0.37);
+    margin: 1px;
+   
+}
+#newbook{
+background-color: rgb(207, 189, 24, 0.37);
+text-align: left;
+margin: 1px;
+}
+#search{
+    background-color: beige;
+    text-align: left;
+    margin: 1px;
+}
+ #search-btn {
+        background-color: rgb(0, 255, 200);
+        color: white;
+        text-decoration: none;
+        border: 2px solid transparent;
+        font-weight: bold;
+        padding: 5px 20px;
+        border-radius: 3px;
+        transition: transform 0.2s;
+    }
+    #search-btn:hover {
+        transform: scale(1.2);}
+        #add-book-btn{
+            background-color: rgb(0, 255, 200);
+        color: white;
+        text-decoration: none;
+        border: 2px solid transparent;
+        font-weight: bold;
+        padding: 5px 20px;
+        border-radius: 3px;
+        transition: transform 0.2s;
+        }
+        #add-book-btn:hover {
+        transform: scale(1.2);}
+
+    </style>
+    <head>
+        <title>OLMS</title>
+    </head>
+    <body>
+        <hr>
+        <div id="container">
+            <div id="vl"></div>
+            <div id="head">
+                <h1>OLMS</h1>
+            </div>
+            <div id="vl"></div>
+            <div id="book">
+                <h1>Book List</h1>
+                <ol id="book-list"></ol>
+            </div>
+            <div id="vl"></div>
+            <div id="newbook">
+                <h1>Add New Book</h1>
+                <form action="submit" method="post">
+                    <label for="title">Title</label><br>
+                    <input type="text" id="title"><br>
+                    <label for="author">Author</label><br>
+                    <input type="text" id="author"><br>
+                    <label for="isbn">ISBN</label><br>
+                    <input type="text" id="isbn"><br>
+                    <button type="button" id="add-book-btn">Add Book</button><br>
+                </form>
+            </div>
+            <div id="vl"></div>
+            <div id="search">
+                <h1>Search for books</h1>
+                <form action="submit" method="post">
+                    <input type="text" id="search-input" placeholder="Book Name"><br>
+                    <button type="button" id="search-btn">Search</button>
+                </form>
+            </div>
+        </div>
+        <hr>
+    
+        <script>
+            const books = [
+                { title: "Hacking: The Art of Exploitation", author: "Jon Erickson", isbn: "987-467932" },
+                { title: "Introduction to the Theory of Computation", author: "Michael", isbn: "987-232456" },
+                { title: "Eloquent JavaScript: A Modern Introduction to Programming", author: "Marijin", isbn: "987-854984" },
+            ];
+    
+            const bookList = document.getElementById("book-list");
+            const addBookBtn = document.getElementById("add-book-btn");
+            const searchBtn = document.getElementById("search-btn");
+    
+            function displayBookList() {
+                bookList.innerHTML = "";
+                for (const book of books) {
+                    const li = document.createElement("li");
+                    li.style.fontSize = "15px";
+                    li.textContent = `${book.title} by ${book.author} ISBN: ${book.isbn}`;
+                    bookList.appendChild(li);
+                }
+            }
+    
+            function addBook() {
+                const title = document.getElementById("title").value;
+                const author = document.getElementById("author").value;
+                const isbn = document.getElementById("isbn").value;
+    
+                if (books.some(book => book.isbn === isbn)) {
+                    alert("This ISBN already exists in the library.");
+                } else {
+                    books.push({ title, author, isbn });
+                    displayBookList();
+                }
+            }
+    
+            function searchBooks() {
+                const searchInput = document.getElementById("search-input").value.toLowerCase();
+    
+                if (searchInput.trim() === "") {
+                    displayBookList();
+                    return;
+                }
+    
+                const filteredBooks = books.filter(book => book.title.toLowerCase().includes(searchInput) || book.author.toLowerCase().includes(searchInput));
+                bookList.innerHTML = "";
+    
+                for (const book of filteredBooks) {
+                    const li = document.createElement("li");
+                    li.style.fontSize = "15px";
+                    li.textContent = `${book.title} by ${book.author} ISBN: ${book.isbn}`;
+                    bookList.appendChild(li);
+                }
+            }
+    
+            addBookBtn.addEventListener("click", addBook);
+            searchBtn.addEventListener("click", searchBooks);
+            displayBookList();
+        </script>
+    </body>
+    </html>
